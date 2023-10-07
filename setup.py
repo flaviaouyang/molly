@@ -1,4 +1,4 @@
-from setuptools import find_packages, setup
+from setuptools import setup
 
 setup(
     name="molly",
@@ -13,5 +13,11 @@ setup(
         "sqlalchemy>=2.0.0",
         "psycopg2-binary>=2.9.9",
         "pandas>=2.1.1",
+        "tabulate>=0.9.0",
+    ],
+    dev_requires=[
+        "yfinance>=0.2.31",
+        "pytest>=7.4.2",
+        "black>=23.9.1",
     ],
 )
