@@ -1,6 +1,10 @@
+import pytest
 from molly.connector import SQLConnector
 
 
+@pytest.mark.skip(
+    reason="Should be tested locally. Remote connection to database is yet to be implemented"
+)
 def test_sql_connector():
     sql = SQLConnector(
         drivername="postgresql",
