@@ -1,6 +1,6 @@
 import os
 import pytest
-from utility.extract_data import (
+from molly.utility.extract_data import (
     download_stock_data_from_yahoo_finance,
     extract_stock_data_from_yahoo_finance,
 )
