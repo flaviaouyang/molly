@@ -1,4 +1,4 @@
-from typing import Dict, List, Mapping, Sequence
+from typing import List, Mapping, Sequence
 from sqlalchemy.engine import URL
 from sqlalchemy import create_engine
 from sqlalchemy import text
