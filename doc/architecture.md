@@ -6,7 +6,12 @@ This document describes the high-level architecture of molly.
 
 On the highest level, molly connects to a data warehouse and accepts a series of user-defined data quality rules. With those information, molly monitors the warehouse continuously, and ping a messaging services when something goes wrong.
 
-More specifically, `Connector` connects to a data warehouse and fetches data. Molly then parses user-defined data quality checks into internal `Feature` objects. `Scheduler` schedules the execution of `Feature` objects and communicates with `Messenger` when necessary. Finally, `Messenger` pings a messaging service when something goes wrong.
+More specifically, Molly contains different components where each component serves a single responsibility:
+    - `Connector` connects to a data warehouse and retrieves information from said warehouse.
+    - `Feature` handles the parsing of user-defined rules as well as the validation of output against user's expectations.
+    - `Director` assembles the workflow and acts as the connection among all components.
+    - `Messenger` communicates with messaging services.
+    - `Scheduler` schedules the execution of all processes.
 
 
 ### Testing

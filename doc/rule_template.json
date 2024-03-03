@@ -7,16 +7,22 @@
                 "table_name": "foreign_exchange_rates",
                 "configurations": {
                     "time_series_index_column": "date",
-                    "attribute_map": {
-                        "country": "AUD"
-                    },
-                    "delta_start_time": -3,
+                    "delta_start_time": -15,
                     "delta_end_time": 0,
-                    "delta_time_unit": "days",
-                    "requirements": {
-                        "maximum_ticks": 4,
-                        "required_ticks": 3
-                    }
+                    "attribute_map": {
+                        "country": [
+                            "AUD",
+                            "USD"
+                        ]
+                    },
+                    "complex_filters": [
+                        "fx > 1.35",
+                        "fx <= 1.352"
+                    ]
+                },
+                "requirements": {
+                    "maximum_ticks": 4,
+                    "required_ticks": 3
                 }
             }
         ]
