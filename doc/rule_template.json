@@ -1,51 +1,27 @@
 {
-    "staleness": {
-        "description": "Stale data is data that hasn't been updated at the frequency interval required for its productive use",
-        "user_define": {
-            "datetime_column_name": "",
-            "freshness_requirements": {
-                "frequency": "",
-                "volume": "",
-                "max_acceptable_staleness": "",
-            },
-            "messaging": {
-                "alert": "",
-                "alert_threshold": "",
-                "slack_channel": "",
-                "slack_webhook": "",
-                "message_prefix": "",
-                "message_suffix": "",
-                "tag_members": [""]
+    "user_defined_rules": {
+        "completeness": [
+            {
+                "db_name": "test",
+                "schema_name": "bank_of_canada",
+                "table_name": "foreign_exchange_rates",
+                "configurations": {
+                    "time_series_index_column": "date",
+                    "attribute_map": {
+                        "country": "AUD"
+                    },
+                    "delta_start_time": -3,
+                    "delta_end_time": 0,
+                    "delta_time_unit": "days",
+                    "requirements": {
+                        "maximum_ticks": 4,
+                        "required_ticks": 3
+                    }
+                }
             }
-        },
-        "output": {
-            "staleness": "boolean",
-            "last_updated": "datetime"
-        }
+        ]
     },
-    "completeness": {
-        "description": "Completeness is the percentage of data that is present in a dataset",
-        "user_define": {
-            "datetime_column_name": "",
-            "other_index_columns": [""],
-            "completeness_requirements": {
-                "granularity": "",
-                "volume": "",
-                "min_acceptable_completeness": ""
-            },
-            "messaging": {
-                "alert": "",
-                "alert_threshold": "",
-                "slack_channel": "",
-                "slack_webhook": "",
-                "message_prefix": "",
-                "message_suffix": "",
-                "tag_members": [""]
-            }
-        },
-        "output": {
-            "completeness": "boolean",
-            "percent_complete": "float"
-        }
+    "credentials": {
+        "test": "postgresql://localhost:5432/test"
     }
 }
