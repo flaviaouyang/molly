@@ -4,7 +4,7 @@ setup(
     name="molly",
     version="0.1",
     author="Flavia Ouyang",
-    author_email="hello@flaviaouyang.com",
+    author_email="flavia.ouyang@mail.mcgill.ca",
     description="Data quality monitoring library",
     url="",
     python_requires=">=3.7, <4",
@@ -12,13 +12,12 @@ setup(
     include_package_data=True,
     install_requires=[
         "sqlalchemy>=2.0.0",
-        "psycopg2-binary>=2.9.9",
         "pandas>=2.1.1",
         "tabulate>=0.9.0",
-        "yfinance>=0.2.31",
     ],
     dev_requires=[
         "pytest>=7.4.2",
         "black>=23.9.1",
+        "isort>=5.13.3",
     ],
 )
