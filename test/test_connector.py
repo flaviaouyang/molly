@@ -2,26 +2,11 @@ import pytest
 from molly.connector import SQLConnector
 
 
-@pytest.mark.skip(
-    reason="Should be tested locally. Remote connection to database is yet to be implemented"
-)
+# @pytest.mark.skip(
+#     reason="Should be tested locally. Remote connection to database is yet to be implemented"
+# )
 def test_sql_connector():
     sql = SQLConnector(
-        drivername="postgresql",
-        username="flavia",
-        password="VHbhugNIbqBv0haBb9",
-        host="localhost",
-        port=5432,
-        database="molly",
+        db_url="postgresql://localhost:5432/test"
     )
-    # data = sql.select(schema="stock", table="bank_of_america")
-    # data = sql.select(schema="stock", table="bank_of_america", limit=10)
-    # data = sql.select(
-    #     schema="stock", table="bank_of_america", where={"Date": "2022-10-11"}
-    # )
-    data = sql.select(
-        schema="stock",
-        table="bank_of_america",
-        where=[{"column": "Date", "value": "2022-11-10", "operator": ">"}],
-        limit=15,
-    )
+    print(sql.read_table("bank_of_canada", "foreign_exchange_rates", {"date": "%Y-%m-%d"}))
