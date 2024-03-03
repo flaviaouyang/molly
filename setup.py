@@ -14,10 +14,14 @@ setup(
         "sqlalchemy>=2.0.0",
         "pandas>=2.1.1",
         "tabulate>=0.9.0",
+        "multimethod>=1.11",
+        "psycopg2>=2.9",
     ],
-    dev_requires=[
-        "pytest>=7.4.2",
-        "black>=23.9.1",
-        "isort>=5.13.3",
-    ],
+    extras_require={
+        "dev": [
+            "pytest>=7.4.2",
+            "black>=23.9.1",
+            "isort>=5.13",
+        ]
+    },
 )
