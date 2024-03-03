@@ -1,17 +1,20 @@
 # Molly
 
-Time-series data quality monitoring library in Python.
+Python time series data quality monitoring library
 
 ## Description
 
-Molly is a Python library for monitoring the quality of time-series data. It is designed to be used in conjunction with a SQL database such as MySQL or PostgreSQL. Currently under development. Pending first release.
+Molly is designed to be used in conjunction with a SQL database such as MySQL or PostgreSQL. Currently under development. Pending first release.
+
 The following features will be included in the first release:
 
 - data staleness monitoring
 - data completeness monitoring
+
 The following data warehouses will be supported in the first release:
 
 - PostgreSQL (tested on version 16)
+
 The following messaging services will be supported in the first release:
 
 - Slack
