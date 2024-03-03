@@ -1,7 +1,8 @@
 import json
+
 from pytest import fixture
 
-from molly.feature import Feature
+from molly.director import Director
 
 
 @fixture
@@ -15,5 +16,5 @@ def test_feature(user_config):
     credentials = user_config["credentials"]
     user_defined_rules = user_config["user_defined_rules"]
 
-    feature = Feature(user_defined_rules, credentials)
+    feature = Director(user_defined_rules, credentials)
     feature.parse()
