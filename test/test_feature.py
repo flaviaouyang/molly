@@ -17,4 +17,4 @@ def test_feature(user_config):
     user_defined_rules = user_config["user_defined_rules"]
 
     feature = Director(user_defined_rules, credentials)
-    feature.parse()
+    feature.execute()
