@@ -16,6 +16,7 @@ setup(
         "tabulate>=0.9.0",
         "multimethod>=1.11",
         "psycopg2>=2.9",
+        "slack_sdk>=3.27.0",
     ],
     extras_require={
         "dev": [
