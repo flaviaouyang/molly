@@ -2,6 +2,7 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from pprint import pformat
+from typing import Tuple
 
 from sqlalchemy import Table
 
@@ -57,7 +58,6 @@ class Director(object):
         return SQLConnector(self.credentials[db_name])
 
     def generate_feature(self, subject_table: Table, rules: dict) -> Feature:
-        logger.info(f"Processing rules for {subject_table.schema}.{subject_table.name}")
         for rule in rules:
             logger.debug(f"Processing rule: {pformat(rule)}")
             feature = feature_factory(
@@ -68,11 +68,17 @@ class Director(object):
             )
             yield feature
 
-    def execute(self):
-        for db_name, table_rules in self.__reduce_to_rule_per_table():
+    def execute(self) -> Tuple[bool, str]:
+        for db_name, table_rules in self.__reduce_to_rule_per_table().items():
+            logger.info(f"Connecting to {db_name} database")
             connector = self.__connect(db_name)
             for (schema_name, table_name), rules in table_rules.items():
                 subject_table = connector.construct_table(schema_name, table_name)
                 for feature_item in self.generate_feature(subject_table, rules):
                     query = feature_item.construct_query()
                     output = connector.execute_query(query)
+                    result = feature_item.validate(output)
+                    description = feature_item.describe()
+                    logger.info(description)
+                    yield (result, description)
+
