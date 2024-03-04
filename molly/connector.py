@@ -37,16 +37,18 @@ class SQLConnector(object):
         )
 
     @overload
-    def execute_query(self, query: str) -> Iterable[pd.DataFrame]: ...
+    def execute_query(self, query: str) -> pd.DataFrame: ...
 
     @overload
-    def execute_query(self, query: Iterable[Select]) -> Iterable[pd.DataFrame]: ...
+    def execute_query(self, query: Iterable[Select]) -> pd.DataFrame: ...
 
     @overload
     def execute_query(self, query: Select) -> Iterable[pd.DataFrame]: ...
 
     def execute_query(self, query) -> Iterable[pd.DataFrame]:
-        query = (
-            [query] if isinstance(query, str) or isinstance(query, Select) else query
-        )
-        return (pd.read_sql_query(q, self.__engine) for q in query)
+        if isinstance(query, str) or isinstance(query, Select):
+            return pd.read_sql_query(query, self.__engine)
+        elif isinstance(query, Iterable):
+            return (pd.read_sql_query(q, self.__engine) for q in query)
+        else:
+            raise ValueError(f"Unsupported query type: {type(query)}")
