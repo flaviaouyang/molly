@@ -1,6 +1,6 @@
 import logging
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import ClassVar, Iterable, Union
 
 import pandas as pd
 from sqlalchemy import Select, and_, select, text, func
@@ -78,7 +78,9 @@ class Completeness(Feature):
         logger.debug(f"Built Completeness Query:\n{query}")
         return query
 
-    def validate(self, retrieved_data: pd.DataFrame) -> bool:
+    def validate(
+        self, retrieved_data: Union[pd.DataFrame, Iterable[pd.DataFrame]]
+    ) -> bool:
         required_ticks = self.requirements["required_ticks"]
         actual_ticks = retrieved_data.iloc[0, 0]
         self.__validation_info = f"Maximum Ticks: {self.requirements['maximum_ticks']}\nRequired Ticks: {required_ticks}\nFound {actual_ticks} ticks\n"
@@ -95,9 +97,7 @@ class Completeness(Feature):
             raise ValueError(
                 "No description. Try calling construct_query() and validate() first."
             )
-        description = (
-            f"Feature: {self.feature_name}\n\n{self.query_info}\n\n{self.validation_info}"
-        )
+        description = f"Feature: {self.feature_name}\n\n{self.query_info}\n\n{self.validation_info}"
         description = f"====================\n{description}\n===================="
         description = f"\nTable: {self.subject_table.schema}.{self.subject_table.name}\n{description}"
         return description

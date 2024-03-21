@@ -2,7 +2,7 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from pprint import pformat
-from typing import Tuple
+from typing import Tuple, Iterable
 
 from sqlalchemy import Table
 
@@ -57,7 +57,7 @@ class Director(object):
     def __connect(self, db_name) -> SQLConnector:
         return SQLConnector(self.credentials[db_name])
 
-    def generate_feature(self, subject_table: Table, rules: dict) -> Feature:
+    def generate_feature(self, subject_table: Table, rules: dict) -> Iterable[Feature]:
         for rule in rules:
             logger.debug(f"Processing rule: {pformat(rule)}")
             feature = feature_factory(
@@ -81,4 +81,3 @@ class Director(object):
                     description = feature_item.describe()
                     logger.info(description)
                     yield (result, description)
-

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import ClassVar
+from typing import ClassVar, Iterable, Union
 
 import pandas as pd
 from sqlalchemy import Table, Select
@@ -22,5 +22,7 @@ class Feature(ABC):
         pass
 
     @abstractmethod
-    def validate(self, retrieved_data: pd.DataFrame) -> bool:
+    def validate(
+        self, retrieved_data: Union[pd.DataFrame, Iterable[pd.DataFrame]]
+    ) -> bool:
         pass
