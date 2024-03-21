@@ -17,9 +17,6 @@ class SlackWeb(Messenger):
 
     def send(self, message: str, destination: str):
         try:
-            self.__client.chat_postMessage(
-                channel=destination,
-                text=message
-            )
+            self.__client.chat_postMessage(channel=destination, text=message)
         except SlackApiError as e:
             assert e.response["error"]
