@@ -16,7 +16,7 @@ SUPPORTED_FEATURES = ["completeness", "staleness"]
 
 
 @dataclass
-class Director(object):
+class Coordinator(object):
     user_defined_rules: dict
     credentials: dict
 
@@ -57,7 +57,8 @@ class Director(object):
     def __connect(self, db_name) -> SQLConnector:
         return SQLConnector(self.credentials[db_name])
 
-    def generate_feature(self, subject_table: Table, rules: dict) -> Iterable[Feature]:
+    @staticmethod
+    def __generate_feature(subject_table: Table, rules: dict) -> Iterable[Feature]:
         for rule in rules:
             logger.debug(f"Processing rule: {pformat(rule)}")
             feature = feature_factory(
@@ -68,16 +69,16 @@ class Director(object):
             )
             yield feature
 
-    def execute(self) -> Tuple[bool, str]:
+    def execute(self) -> Iterable[Tuple[bool, str]]:
         for db_name, table_rules in self.__reduce_to_rule_per_table().items():
             logger.info(f"Connecting to {db_name} database")
             connector = self.__connect(db_name)
             for (schema_name, table_name), rules in table_rules.items():
                 subject_table = connector.construct_table(schema_name, table_name)
-                for feature_item in self.generate_feature(subject_table, rules):
+                for feature_item in self.__generate_feature(subject_table, rules):
                     query = feature_item.construct_query()
                     output = connector.execute_query(query)
                     result = feature_item.validate(output)
                     description = feature_item.describe()
                     logger.info(description)
-                    yield (result, description)
+                    yield result, description
