@@ -26,3 +26,7 @@ class Feature(ABC):
         self, retrieved_data: Union[pd.DataFrame, Iterable[pd.DataFrame]]
     ) -> bool:
         pass
+
+    @abstractmethod
+    def describe(self) -> str:
+        pass
