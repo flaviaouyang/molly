@@ -2,7 +2,7 @@ import json
 
 from pytest import fixture
 
-from molly.director import Director
+from molly.coordinator import Coordinator
 
 
 @fixture
@@ -16,5 +16,7 @@ def test_feature(user_config):
     credentials = user_config["credentials"]
     user_defined_rules = user_config["user_defined_rules"]
 
-    feature = Director(user_defined_rules, credentials)
-    feature.execute()
+    feature = Coordinator(user_defined_rules, credentials)
+    for result, description in feature.execute():
+        print(description)
+        print(result)
