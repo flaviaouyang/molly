@@ -23,14 +23,24 @@ The following messaging services will be supported in the first release:
 
 We strongly recommend using a virtual environment to install Molly.
 
-Standard setup using pip:
+Standard set up using pip:
 
-```python
+```bash
 cd molly
 conda create -n "molly" python=3.12
 conda activate molly
 pip install .
 ```
+
+Development set up using pip:
+
+```bash
+cd molly
+conda create -n "molly" python=3.12
+conda activate molly
+pip install -e ".[dev]"
+```
+
 <!-- TODO: using molly as a TUI or as an airflow DAG -->
 <!-- TODO: scheduling -->
 
