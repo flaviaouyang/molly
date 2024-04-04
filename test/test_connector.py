@@ -5,9 +5,7 @@ from sqlalchemy import select
 from molly.connector import SQLConnector
 
 
-@pytest.mark.skip(
-    reason="Should be tested locally. Remote connection to database is yet to be implemented"
-)
+@pytest.mark.skip(reason="Local Test Only.")
 def test_sql_connector():
     sql = SQLConnector("postgresql://localhost:5432/test")
     fx = sql.read_table(
@@ -22,7 +20,7 @@ def test_sql_connector():
     )
 
     data = sql.execute_query("SELECT * FROM bank_of_canada.foreign_exchange_rates")
-    assert isinstance(next(data), pd.DataFrame)
+    assert isinstance(data, pd.DataFrame)
 
     queries = (
         select(table_info).where(table_info.c.country == country)
