@@ -1,7 +1,6 @@
 import logging
 from dataclasses import dataclass
 from pprint import pformat
-from typing import Iterable, Union
 
 import pandas as pd
 from sqlalchemy import and_, func, Select, select, text
@@ -49,9 +48,7 @@ class Completeness(Feature):
         self.__query_info = query
         return query
 
-    def validate(
-        self, retrieved_data: Union[pd.DataFrame, Iterable[pd.DataFrame]]
-    ) -> bool:
+    def validate(self, retrieved_data: pd.DataFrame) -> bool:
         required_ticks = self.requirements["required_ticks"]
         maximum_ticks = self.requirements.get("maximum_ticks", None)
         # TODO: retrieved_data can also be a generator??? maybe not
@@ -73,8 +70,9 @@ class Completeness(Feature):
         validation_info = self.requirements
         validation_result = self.__validation_result
         description = f"""
-            Table: {self.subject_table.schema}.{self.subject_table.name}\n
             Feature: {self.feature_name}\n
+            --------------------------------\n
+            Table: {self.subject_table.schema}.{self.subject_table.name}\n
             Rule Configurations:\n{pformat(self.configurations, sort_dicts=False)}\n
             Query executed:\n{query_info}\n
             Requirements:\n{pformat(validation_info, sort_dicts=False)}\n
