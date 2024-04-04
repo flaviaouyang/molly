@@ -7,16 +7,20 @@ from molly.coordinator import Coordinator
 
 @fixture
 def user_config():
-    file = "/Users/flaviaouyang/Projects/molly/doc/rule_template.json"
+    file = "./config/test_rules.json"
     with open(file, "r") as f:
         return json.load(f)
 
 
+@pytest.mark.skip(
+    reason="Local Test Only."
+)
 def test_feature(user_config):
     credentials = user_config["credentials"]
     user_defined_rules = user_config["user_defined_rules"]
 
     feature = Coordinator(user_defined_rules, credentials)
     for result, description in feature.execute():
-        print(description)
-        print(result)
+        # print(description)
+        # print(result)
+        continue
