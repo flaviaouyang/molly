@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Iterable, overload
 
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, Select, Table
+from sqlalchemy import MetaData, Select, Table, create_engine
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,6 @@ class SQLConnector(object):
             autoload_with=self.__engine,
         )
 
-    # TODO: what???????
     @overload
     def execute_query(self, query: str) -> pd.DataFrame: ...
 

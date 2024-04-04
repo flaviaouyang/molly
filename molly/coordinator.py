@@ -77,7 +77,6 @@ class Coordinator(object):
                 subject_table = connector.construct_table(schema_name, table_name)
                 for feature_item in self.__generate_feature(subject_table, rules):
                     query = feature_item.construct_query()
-                    # TODO: output can also be a generator??? maybe not
                     output = connector.execute_query(query)
                     result = feature_item.validate(output)
                     description = feature_item.describe()
