@@ -1,5 +1,6 @@
 import json
 
+import pytest
 from pytest import fixture
 
 from molly.coordinator import Coordinator
@@ -19,6 +20,6 @@ def test_feature(user_config):
 
     feature = Coordinator(user_defined_rules, credentials)
     for result, description in feature.execute():
-        # print(description)
+        print(description)
         # print(result)
         continue
