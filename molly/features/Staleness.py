@@ -1,8 +1,10 @@
 import logging
 from dataclasses import dataclass
+from pprint import pformat
 
 import pandas as pd
 from sqlalchemy import Select, select, text
+from tabulate import tabulate
 
 from molly.features.feature import Feature
 from molly.utility.datetime import parse_date
@@ -41,13 +43,16 @@ class Staleness(Feature):
     def validate(self, retrieved_data: pd.DataFrame) -> bool:
         is_validate = True
         self.__validation_result = "Validation output:"
+        self.requirements["maximum_latency"]["value"] = (
+            self.requirements["maximum_latency"]["value"] * -1
+        )
         maximum_latency = parse_date(self.requirements["maximum_latency"])
         logger.debug(f"Maximum Latency: {maximum_latency}")
         availability_column = self.configurations["availability_column"]
         group_by_columns = self.configurations.get("group_by_columns", [])
 
         if not group_by_columns:
-            is_validate = retrieved_data[availability_column].max() < maximum_latency
+            is_validate = retrieved_data[availability_column].max() > maximum_latency
             self.__validation_result += f"""
             There is no group by columns. Data was last updated at {retrieved_data[availability_column].max()}.
             Validation result: {is_validate}
@@ -58,7 +63,7 @@ class Staleness(Feature):
             f"\nFollowing Group by columns used: {group_by_columns}"
         )
         for index, df in retrieved_data.groupby(group_by_columns):
-            is_subgroup_validate = df[availability_column].max() < maximum_latency
+            is_subgroup_validate = df[availability_column].max() > maximum_latency
             self.__validation_result += (
                 f"\nIndex: {index}. Data was last updated at {df[availability_column].max()}. "
                 f"Validate: {is_subgroup_validate}"
@@ -69,5 +74,18 @@ class Staleness(Feature):
         return is_validate
 
     def describe(self) -> str:
-        print(self.__query_info)
-        print(self.__validation_result)
+        query_info = self.__query_info
+        validation_info = self.requirements
+        validation_result = self.__validation_result
+        description = f"""
+            Feature: {self.feature_name}
+            --------
+            Table: {self.subject_table.schema}.{self.subject_table.name}\n
+            Rule Configurations:\n{pformat(self.configurations, sort_dicts=False)}\n
+            Query executed:\n{query_info}\n
+            Requirements:\n{pformat(validation_info, sort_dicts=False)}\n
+            {validation_result}
+        """
+        # XXX: textwrap.dedent doesn't work as expected
+        description = "\n".join(line.lstrip() for line in description.split("\n"))
+        return tabulate([[description]], tablefmt="grid")
