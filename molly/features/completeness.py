@@ -1,9 +1,11 @@
 import logging
 from dataclasses import dataclass
-from typing import ClassVar, Iterable, Union
+from pprint import pformat
+from typing import Iterable, Union
 
 import pandas as pd
-from sqlalchemy import Select, and_, select, text, func
+from sqlalchemy import and_, func, Select, select, text
+from tabulate import tabulate
 
 from molly.features.feature import Feature
 from molly.utility.datetime import parse_date
@@ -20,8 +22,8 @@ class Completeness(Feature):
     def construct_query(self) -> Select:
         # Add time constraints
         time_series_index_column = self.configurations["time_series_index_column"]
-        start_time = parse_date(self.configurations["delta_start_time"])
-        end_time = parse_date(self.configurations["delta_end_time"])
+        start_time = parse_date(self.configurations["start_time"])
+        end_time = parse_date(self.configurations["end_time"])
         query = select(self.subject_table).where(
             and_(
                 self.subject_table.c[time_series_index_column] >= start_time,
@@ -44,23 +46,40 @@ class Completeness(Feature):
         # Since it's completeness, we only care about the number of the records
         query = select(func.count("*")).select_from(query)
         logger.debug(f"Built Completeness Query:\n{query}")
+        self.__query_info = query
         return query
 
     def validate(
         self, retrieved_data: Union[pd.DataFrame, Iterable[pd.DataFrame]]
     ) -> bool:
         required_ticks = self.requirements["required_ticks"]
+        maximum_ticks = self.requirements.get("maximum_ticks", None)
+        # TODO: retrieved_data can also be a generator??? maybe not
         actual_ticks = retrieved_data.iloc[0, 0]
         result = actual_ticks >= required_ticks
         logger.debug(
-            f"Validating Completeness: Required Ticks: {required_ticks}, Actual Ticks: {actual_ticks}.\nResult: {result}"
+            f"Validating Completeness: Required Ticks: {required_ticks}, Actual Ticks: {actual_ticks}. "
+            f" Result: {result}"
         )
+        if actual_ticks > maximum_ticks:
+            logger.warning(
+                f"Actual ticks ({actual_ticks}) is greater than maximum ticks ({maximum_ticks})."
+            )
+        self.__validation_result = result
         return result
 
     def describe(self) -> str:
-        query_info = self.construct_query()
+        query_info = self.__query_info
         validation_info = self.requirements
-        description = f"Feature: {self.feature_name}\n\nQuery executed: {query_info}\n\nRequirements: {validation_info}"
-        description = f"====================\n{description}\n===================="
-        description = f"\nTable: {self.subject_table.schema}.{self.subject_table.name}\n{description}"
-        return description
+        validation_result = self.__validation_result
+        description = f"""
+            Table: {self.subject_table.schema}.{self.subject_table.name}\n
+            Feature: {self.feature_name}\n
+            Rule Configurations:\n{pformat(self.configurations, sort_dicts=False)}\n
+            Query executed:\n{query_info}\n
+            Requirements:\n{pformat(validation_info, sort_dicts=False)}\n
+            Validation Result: {validation_result}
+        """
+        # XXX: textwrap.dedent doesn't work as expected
+        description = "\n".join(line.lstrip() for line in description.split("\n"))
+        return tabulate([[description]], tablefmt="grid")
