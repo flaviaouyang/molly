@@ -2,7 +2,7 @@ import logging
 from collections import defaultdict
 from dataclasses import dataclass
 from pprint import pformat
-from typing import Tuple, Iterable
+from typing import Iterable, Tuple
 
 from sqlalchemy import Table
 
@@ -60,7 +60,7 @@ class Coordinator(object):
     @staticmethod
     def __generate_feature(subject_table: Table, rules: dict) -> Iterable[Feature]:
         for rule in rules:
-            logger.debug(f"Processing rule: {pformat(rule)}")
+            logger.debug(f"Processing rule:\n{pformat(rule)}")
             feature = feature_factory(
                 feature_name=rule["feature_name"],
                 subject_table=subject_table,
@@ -77,6 +77,7 @@ class Coordinator(object):
                 subject_table = connector.construct_table(schema_name, table_name)
                 for feature_item in self.__generate_feature(subject_table, rules):
                     query = feature_item.construct_query()
+                    # TODO: output can also be a generator??? maybe not
                     output = connector.execute_query(query)
                     result = feature_item.validate(output)
                     description = feature_item.describe()
