@@ -1,6 +1,6 @@
 # Molly
 
-Python time series data quality monitoring library
+Molly is a data quality monitoring library specifically designed for time series data written in pure Python.
 
 ## Description
 
@@ -11,27 +11,28 @@ The following features will be included in the first release:
 - data staleness monitoring
 - data completeness monitoring
 
-The following data warehouses will be supported in the first release:
-
-- PostgreSQL (tested on version 16)
-
 The following messaging services will be supported in the first release:
 
 - Slack
 
 ## Getting Started
 
-### Installing
+### Usage
+
+#### Installation
+
+We strongly recommend using a virtual environment to install Molly.
+
+Standard setup using pip:
 
 ```python
 cd molly
+conda create -n "molly" python=3.12
+conda activate molly
 pip install .
 ```
-
-## Version History
-
-- 0.1
-  - Connector development (2023-10-05)
+<!-- TODO: using molly as a TUI or as an airflow DAG -->
+<!-- TODO: scheduling -->
 
 ## License
 
