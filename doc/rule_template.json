@@ -1,33 +1,55 @@
 {
-    "user_defined_rules": {
-        "completeness": [
-            {
-                "db_name": "test",
-                "schema_name": "bank_of_canada",
-                "table_name": "foreign_exchange_rates",
-                "configurations": {
-                    "time_series_index_column": "date",
-                    "delta_start_time": -15,
-                    "delta_end_time": 0,
-                    "attribute_map": {
-                        "country": [
-                            "AUD",
-                            "USD"
-                        ]
-                    },
-                    "complex_filters": [
-                        "fx > 1.35",
-                        "fx <= 1.352"
-                    ]
-                },
-                "requirements": {
-                    "maximum_ticks": 4,
-                    "required_ticks": 3
-                }
-            }
-        ]
-    },
-    "credentials": {
-        "test": "postgresql://localhost:5432/test"
-    }
+  "user_defined_rules": {
+    "completeness": [
+      {
+        "db_name": "test",
+        "schema_name": "bank_of_canada",
+        "table_name": "foreign_exchange_rates",
+        "configurations": {
+          "time_series_index_column": "date",
+          "start_time": -15,
+          "end_time": 0,
+          "attribute_map": {
+            "country": [
+              "AUD",
+              "USD"
+            ]
+          },
+          "complex_filters": [
+            "fx > 1.35",
+            "fx <= 1.352"
+          ]
+        },
+        "requirements": {
+          "maximum_ticks": 4,
+          "required_ticks": 3
+        }
+      }
+    ],
+    "staleness": [
+      {
+        "db_name": "test",
+        "schema_name": "ieso",
+        "table_name": "hourly_energy_price",
+        "configurations": {
+          "availability_column": "availability_timestamp",
+          "group_by_columns": [
+            "utc_timestamp"
+          ],
+          "complex_filters": [
+            "price > 0.0"
+          ]
+        },
+        "requirements": {
+          "maximum_latency": {
+            "unit": "hours",
+            "value": 2
+          }
+        }
+      }
+    ]
+  },
+  "credentials": {
+    "test": "postgresql://localhost:5432/test"
+  }
 }
