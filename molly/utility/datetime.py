@@ -9,27 +9,33 @@ logger = logging.getLogger(__name__)
 
 
 def parse_date(
-    value: Union[str, int, datetime, Tuple[str, int], Dict[str, Any]],
+    utc_value: Union[str, int, datetime, Tuple[str, int], Dict[str, Any]],
 ) -> datetime:
-    if isinstance(value, datetime):
-        logger.debug(f"Value {value} is already a datetime object. Returning the same.")
-        return value
+    """
+    Parse the given value to a datetime object.
+    Note: This function expects the value to be in UTC timezone.
+    """
+    if isinstance(utc_value, datetime):
+        logger.debug(
+            f"Value {utc_value} is already a datetime object. Returning the same."
+        )
+        return utc_value
 
-    if isinstance(value, str):
-        parsed_value = parser.parse(value)
-        logger.debug(f"Parsed {value} to {parsed_value}")
+    if isinstance(utc_value, str):
+        parsed_value = parser.parse(utc_value)
+        logger.debug(f"Parsed {utc_value} to {parsed_value}")
         return parsed_value
 
     utc_now = datetime.now(tz=timezone.utc)
-    if isinstance(value, int):
-        processed_value = ("days", value)
-    elif isinstance(value, dict):
-        processed_value = (value["unit"], value["value"])
-    elif isinstance(value, tuple):
-        processed_value = value
+    if isinstance(utc_value, int):
+        processed_value = ("days", utc_value)
+    elif isinstance(utc_value, dict):
+        processed_value = (utc_value["unit"], utc_value["value"])
+    elif isinstance(utc_value, tuple):
+        processed_value = utc_value
     else:
         raise TypeError(
-            f"Unsupported value type {type(value)}. Supported types are str, int, dict, Tuple[str, int]"
+            f"Unsupported value type {type(utc_value)}. Supported types are str, int, dict, Tuple[str, int]"
         )
 
     unit, numeric_value = processed_value
@@ -50,5 +56,5 @@ def parse_date(
     ), f"If value is a tuple, it should be (str, int) but got (str, {type(numeric_value)})"
     parsed_value = utc_now + timedelta(**{unit: numeric_value})
 
-    logger.debug(f"Parsed {value} to {parsed_value}")
+    logger.debug(f"Parsed {utc_value} to {parsed_value}")
     return parsed_value
