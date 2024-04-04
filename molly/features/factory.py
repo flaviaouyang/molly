@@ -1,5 +1,5 @@
 from molly.features.completeness import Completeness
-from molly.features.Staleness import Staleness
+from molly.features.staleness import Staleness
 
 
 def feature_factory(feature_name: str, **kwargs):
