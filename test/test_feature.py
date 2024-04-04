@@ -12,9 +12,7 @@ def user_config():
         return json.load(f)
 
 
-@pytest.mark.skip(
-    reason="Local Test Only."
-)
+@pytest.mark.skip(reason="Local Test Only.")
 def test_feature(user_config):
     credentials = user_config["credentials"]
     user_defined_rules = user_config["user_defined_rules"]
