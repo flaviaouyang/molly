@@ -1,5 +1,5 @@
 # Molly
-[![Molly Pipeline Test](https://github.com/flaviaouyang/molly/actions/workflows/python-app.yml/badge.svg)](https://github.com/flaviaouyang/molly/actions/workflows/python-app.yml)
+[![Molly Pipeline Test](https://github.com/flaviaouyang/molly/actions/workflows/pipeline-test.yml/badge.svg)](https://github.com/flaviaouyang/molly/actions/workflows/pipeline-test.yml)
 
 Molly is a data quality monitoring library specifically designed for time series data written in pure Python.
 
