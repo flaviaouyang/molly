@@ -23,6 +23,7 @@ setup(
             "pytest>=7.4.2",
             "black>=23.9.1",
             "isort>=5.13",
+            "requests>=2.26.0",
         ]
     },
 )
