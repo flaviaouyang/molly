@@ -13,8 +13,3 @@ More specifically, Molly contains different components where each component serv
     - `Messenger` communicates with messaging services.
     <!-- TODO: maybe remove scheduler -->
     - `Scheduler` schedules the execution of all processes.
-
-
-### Testing
-
-<!-- TODO -->
