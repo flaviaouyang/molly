@@ -51,7 +51,6 @@ class Completeness(Feature):
     def validate(self, retrieved_data: pd.DataFrame) -> bool:
         required_ticks = self.requirements["required_ticks"]
         maximum_ticks = self.requirements.get("maximum_ticks", None)
-        # TODO: retrieved_data can also be a generator??? maybe not
         actual_ticks = retrieved_data.iloc[0, 0]
         result = actual_ticks >= required_ticks
         logger.debug(
