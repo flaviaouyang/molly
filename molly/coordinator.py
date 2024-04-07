@@ -15,14 +15,12 @@ logger = logging.getLogger(__name__)
 SUPPORTED_FEATURES = ["completeness", "staleness"]
 
 
-@dataclass
+@dataclass(frozen=True)
 class Coordinator(object):
     user_defined_rules: dict
     credentials: dict
 
     def __post_init__(self):
-        self.user_defined_rules = self.user_defined_rules
-        self.credentials = self.credentials
         for feature_name in self.user_defined_rules.keys():
             assert (
                 feature_name in SUPPORTED_FEATURES
@@ -75,7 +73,9 @@ class Coordinator(object):
             connector = self.__connect(db_name)
             for (schema_name, table_name), rules in table_rules.items():
                 subject_table = connector.construct_table(schema_name, table_name)
-                for feature_item in self.__generate_feature(subject_table, rules):
+                for feature_item in Coordinator.__generate_feature(
+                    subject_table, rules
+                ):
                     query = feature_item.construct_query()
                     output = connector.execute_query(query)
                     result = feature_item.validate(output)
