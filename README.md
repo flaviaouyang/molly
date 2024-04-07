@@ -112,6 +112,9 @@ with DAG(
 ) as dag:
     monitor_data_quality()
 ```
+## Monitor Report
+
+![Example report](./doc/example_report.png)
 
 ## License
 
