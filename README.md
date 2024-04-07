@@ -6,7 +6,7 @@ Molly is a data quality monitoring library specifically designed for time series
 
 ## Description
 
-Molly is designed to monitor time series data in a SQL database such as MySQL or PostgreSQL. (Tested with PostgreSQL.)
+Molly is designed to monitor time series data in a SQL database such as MySQL or PostgreSQL.
 
 Currently supported data quality feature:
 
