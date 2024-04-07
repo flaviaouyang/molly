@@ -1,5 +1,5 @@
 {
-  "user_defined_rules": {
+  "data_quality_rules": {
     "completeness": [
       {
         "db_name": "test",
@@ -49,7 +49,14 @@
       }
     ]
   },
-  "credentials": {
+  "sql_credentials": {
     "test": "postgresql://localhost:5432/test"
+  },
+  "monitor_platform_config": {
+    "messenger_name": "Slack Web API",
+    "messenger_credentials": {
+      "slack_bot_token": "[redacted]"
+    },
+    "destination": "dq_monitoring"
   }
 }
