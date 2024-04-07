@@ -6,22 +6,23 @@ Molly is a data quality monitoring library specifically designed for time series
 
 ## Description
 
-Molly is designed to be used in conjunction with a SQL database such as MySQL or PostgreSQL. Currently under development. Pending first release.
+Molly is designed to monitor time series data in a SQL database such as MySQL or PostgreSQL. (Tested with PostgreSQL.)
 
-The following features will be included in the first release:
+Currently supported data quality feature:
 
-- data staleness monitoring
-- data completeness monitoring
+- staleness: when the data was last updated
+- completeness: whether any data is missing in a given date range
 
-The following messaging services will be supported in the first release:
+Currently support messaging service:
 
-- Slack
+- Slack Web API
 
 ## Getting Started
 
 ### Installation
 
-We strongly recommend using a virtual environment to install Molly.
+I strongly recommend using a virtual environment to install Molly.
+
 Standard setup using pip:
 
 ```bash
