@@ -89,6 +89,29 @@ For more details, please refer to the example configuration file in the `doc` di
     - Example: `0 0 * * * python -m molly <path_to_config_file>`
 2. Use an Airflow DAG to schedule the command line tool.
 
+```python
+from airflow import DAG
+from airflow.decorators import task
+from molly import monitor_data_quality
+
+@task
+def monitor_data_quality():
+    monitor_data_quality(
+        data_quality_rules=data_quality_rules,
+        sql_credentials=sql_credentials,
+        monitor_platform_config=monitor_platform_config
+    )
+
+
+with DAG(
+    dag_id="molly_dag",
+    schedule_interval="0 0 * * *",
+    default_args=default_args,
+    catchup=False,
+) as dag:
+    monitor_data_quality()
+```
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details
